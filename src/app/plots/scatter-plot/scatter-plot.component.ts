@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './scatter-plot.component.css'
 })
 export class ScatterPlotComponent {
-
+  
 }
