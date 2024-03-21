@@ -1,19 +1,19 @@
 export interface ObservationModel {
-  end_year: Number;
-  intensity: Number;
-  sector: String;
-  topic: String;
-  insight: String;
-  url: String;
-  region: String;
-  start_year: Number;
-  impact: Number;
-  added: Date;
-  published: Date;
-  country: String;
-  relevance: Number;
-  pestle: String;
-  source: String;
-  title: String;
-  likelihood: Number;
+  end_year: number;
+  intensity: number;
+  sector: string;
+  topic: string;
+  insight: string;
+  url: string;
+  region: string;
+  start_year: number;
+  impact: number;
+  added: Date|string;
+  published: Date|string;
+  country: string;
+  relevance: number;
+  pestle: string;
+  source: string;
+  title: string;
+  likelihood: number;
 }

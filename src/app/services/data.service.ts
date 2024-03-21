@@ -23,4 +23,8 @@ export class DataService {
   getObservations() {
     return this.observations;
   }
+
+  getCategoryDomain(categoryName: string) {
+    return this.http.get<string[]>(`${this.apiUrl}observation/${categoryName}/domain`);
+  }
 }
