@@ -104,8 +104,8 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .append('path')
       .datum(this.observations)
       .attr('d', line)
-      .style('stroke', '#787878')
-      .style('stroke-width', 2)
+      .style('stroke', 'rgb(0, 207, 232)')
+      .style('stroke-width', 1)
       .style('fill', 'transparent');
   }
 

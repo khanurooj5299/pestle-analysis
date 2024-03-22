@@ -21,6 +21,8 @@ body {
   --background-color-dark: rgb(15, 15, 17);
   --background-color-grey: #232125;
   --background-color-light-grey: #55505b;
+  --background-color-bright: rgb(255, 255, 255);
   --border-color: #746e7c;
-  --title-text-color: #fbfbfb;
+  ---text-light: #fbfbfb;
+  --text-dark: rgba(47, 43, 61, 0.9);
 }

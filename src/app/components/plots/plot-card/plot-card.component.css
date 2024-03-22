@@ -6,7 +6,7 @@
 }
 
 .card-header {
-    color: var(--title-text-color);
+    color: var(---text-light);
     border-color: var(--border-color);
     background-color: var(--background-color-light-grey);
 }

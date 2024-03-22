@@ -1,4 +1,5 @@
 figure {
-    background-color: white;
+    background-color: var(--background-color-bright);
     border-radius: 3px;
+    color: var(--text-dark);
 }
