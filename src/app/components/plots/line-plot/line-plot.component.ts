@@ -83,13 +83,31 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     this.lineSVG
       .append('g')
       .attr('transform', `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale))
+      .call((g: any) =>
+        g
+          .append('text')
+          .attr('x', width - marginRight)
+          .attr('y', marginBottom - 4)
+          .attr('fill', 'currentColor')
+          .attr('text-anchor', 'end')
+          .text('Published date →')
+      );
 
     //draw y-axis
     this.lineSVG
       .append('g')
       .attr('transform', `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(yScale));
+      .call(d3.axisLeft(yScale))
+      .call((g: any) =>
+        g
+          .append('text')
+          .attr('x', -marginLeft+10)
+          .attr('y', 10)
+          .attr('fill', 'currentColor')
+          .attr('text-anchor', 'start')
+          .text('↑ Intensity')
+      );
 
     //create the line generator
     const line = d3
