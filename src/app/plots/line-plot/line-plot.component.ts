@@ -92,17 +92,12 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .call(d3.axisLeft(yScale));
 
     //create the line generator
-    //??deal with missing data
     const line = d3
       .line()
-      .x((d: any) => {
-        if (d.published) return xScale(new Date(d.published));
-        return xScale(minDate);
-      })
-      .y((d: any) => {
-        if (d.intensity) return yScale(d.intensity);
-        return yScale(minIntensity);
-      });
+      //only plot those observations which have no missing pieces
+      .defined((d: any) => d.intensity && d.published)
+      .x((d: any) => xScale(new Date(d.published)))
+      .y((d: any) => yScale(d.intensity));
 
     //draw the line
     this.lineSVG
