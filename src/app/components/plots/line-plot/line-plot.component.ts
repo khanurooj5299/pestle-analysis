@@ -28,7 +28,6 @@ export class LinePlotComponent implements OnInit, OnDestroy {
   }
   public set xField(field) {
     this._xField = field;
-    console.log("here")
     this.sortObservations(field);
     this.renderPlot();
   }

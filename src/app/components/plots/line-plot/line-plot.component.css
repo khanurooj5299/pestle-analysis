@@ -4,3 +4,10 @@ figure {
     color: var(--text-dark);
     margin: 0;
 }
+
+.vs {
+    color: var(--text-light);
+    font-size: 1rem;
+    text-align: center;
+    align-self: center;
+}
