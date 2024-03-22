@@ -1,4 +1,5 @@
 <div>
+<!-- For x-axis -->
 <mat-form-field>
   <mat-select [(value)]="xField">
     <mat-option value="published">Published</mat-option>
@@ -7,6 +8,16 @@
     <mat-option value="start_year">Start Year</mat-option>
   </mat-select>
 </mat-form-field>
+<!-- For y-axis -->
+<mat-form-field>
+  <mat-select [(value)]="yField">
+    <mat-option value="intensity">Intensity</mat-option>
+    <mat-option value="impact">Impact</mat-option>
+    <mat-option value="relevance">Relevance</mat-option>
+    <mat-option value="likelihood">Likelihood</mat-option>
+  </mat-select>
+</mat-form-field>
+
 </div>
 <figure id="line-plot">
 </figure>

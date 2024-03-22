@@ -56,7 +56,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     //clear any prior chart renders
     d3.selectAll("#line-plot > *").remove();
 
-    //line plot for published date vs intensity
+    //line plot for date fields vs numerical fields (check xFields and yFields types above)
     const width = 900;
     const height = 500;
     const marginTop = 25;
@@ -81,17 +81,17 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .nice();
 
     //create y-scale
-    const minIntensity = d3.min(
+    const minY = d3.min(
       this.observations,
       (d) => d[this.yField]
     ) as number;
-    const maxIntensity = d3.max(
+    const maxY = d3.max(
       this.observations,
-      (d) => d.intensity
+      (d) => d[this.yField]
     ) as number;
     const yScale = d3
       .scaleLinear(
-        [minIntensity, maxIntensity],
+        [minY, maxY],
         [height - marginBottom, marginTop]
       )
       .nice();
@@ -130,16 +130,16 @@ export class LinePlotComponent implements OnInit, OnDestroy {
           .attr('y', 10)
           .attr('fill', 'currentColor')
           .attr('text-anchor', 'start')
-          .text('↑ Intensity')
+          .text(`↑ ${this.yField}`)
       );
 
     //create the line generator
     const line = d3
       .line()
       //only plot those observations which have no missing pieces
-      .defined((d: any) => d.intensity && d[this.xField])
+      .defined((d: any) => d[this.yField] && d[this.xField])
       .x((d: any) => xScale(new Date(d[this.xField])))
-      .y((d: any) => yScale(d.intensity));
+      .y((d: any) => yScale(d[this.yField]));
 
     //draw the line
     this.lineSVG
