@@ -1,22 +1,31 @@
-<div class="row justify-content-center">
-  <!-- For x-axis -->
-  <mat-form-field class="col-12 col-sm-4">
-    <mat-select [(value)]="xField">
-      <mat-option value="published">Published</mat-option>
-      <mat-option value="added">Added</mat-option>
-      <mat-option value="end_year">End Year</mat-option>
-      <mat-option value="start_year">Start Year</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div class="vs col-12 col-sm-2 mb-3 mb-sm-0">VS</div>
-  <!-- For y-axis -->
-  <mat-form-field class="col-12 col-sm-4">
-    <mat-select [(value)]="yField">
-      <mat-option value="intensity">Intensity</mat-option>
-      <mat-option value="impact">Impact</mat-option>
-      <mat-option value="relevance">Relevance</mat-option>
-      <mat-option value="likelihood">Likelihood</mat-option>
-    </mat-select>
-  </mat-form-field>
+
+  <div class="row justify-content-start">
+    <!-- For x-axis -->
+    <mat-form-field class="col-12 col-sm-3">
+      <mat-select [(value)]="xField">
+        <mat-option value="published">Published</mat-option>
+        <mat-option value="added">Added</mat-option>
+        <mat-option value="end_year">End Year</mat-option>
+        <mat-option value="start_year">Start Year</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="vs col-12 col-sm-1 mb-3 mb-sm-0">VS</div>
+    <!-- For y-axis -->
+    <mat-form-field class="col-12 col-sm-3">
+      <mat-select [(value)]="yField">
+        <mat-option value="intensity">Intensity</mat-option>
+        <mat-option value="impact">Impact</mat-option>
+        <mat-option value="relevance">Relevance</mat-option>
+        <mat-option value="likelihood">Likelihood</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="align-self-start col-12 col-sm-3 mb-3 mb-sm-0 ms-auto" >
+  <mat-button-toggle-group
+    [(ngModel)]="plotType"
+    
+  >
+    <mat-button-toggle value="line">Line</mat-button-toggle>
+    <mat-button-toggle value="scatter">Scatter</mat-button-toggle>
+  </mat-button-toggle-group></div>
 </div>
 <figure id="line-plot"></figure>

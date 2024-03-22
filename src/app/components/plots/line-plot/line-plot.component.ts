@@ -1,19 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
 
 import { ObservationModel } from '../../../models/observation.model';
 import { DataService } from '../../../services/data.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
-type x_fields = "published"|"added"|"end_year"|"start_year";
-type y_fields = "intensity"|"impact"|"relevance"|"likelihood"
+type x_fields = 'published' | 'added' | 'end_year' | 'start_year';
+type y_fields = 'intensity' | 'impact' | 'relevance' | 'likelihood';
 
 @Component({
   selector: 'app-line-plot',
   standalone: true,
-  imports: [MatSelectModule, MatFormFieldModule],
+  imports: [MatSelectModule, FormsModule, MatButtonToggleModule],
   templateUrl: './line-plot.component.html',
   styleUrl: './line-plot.component.css',
 })
@@ -22,7 +23,8 @@ export class LinePlotComponent implements OnInit, OnDestroy {
   private subscription: Subscription | undefined;
   private lineSVG: any;
   //getters and setters for default fields used for plotting
-  private _xField: x_fields= "published";
+  //could use change event of select also to trigger plot render when select is changed. Just wanted to practice getters and setters
+  private _xField: x_fields = 'published';
   public get xField() {
     return this._xField;
   }
@@ -31,7 +33,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     this.sortObservations(field);
     this.renderPlot();
   }
-  private _yField: y_fields = "intensity";
+  private _yField: y_fields = 'intensity';
   public get yField() {
     return this._yField;
   }
@@ -39,6 +41,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     this._yField = field;
     this.renderPlot();
   }
+  plotType: string = 'line';
 
   constructor(private dataService: DataService) {}
 
@@ -53,7 +56,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
 
   renderPlot() {
     //clear any prior chart renders
-    d3.selectAll("#line-plot > *").remove();
+    d3.selectAll('#line-plot > *').remove();
 
     //line plot for date fields vs numerical fields (check xFields and yFields types above)
     const width = 900;
@@ -80,19 +83,10 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .nice();
 
     //create y-scale
-    const minY = d3.min(
-      this.observations,
-      (d) => d[this.yField]
-    ) as number;
-    const maxY = d3.max(
-      this.observations,
-      (d) => d[this.yField]
-    ) as number;
+    const minY = d3.min(this.observations, (d) => d[this.yField]) as number;
+    const maxY = d3.max(this.observations, (d) => d[this.yField]) as number;
     const yScale = d3
-      .scaleLinear(
-        [minY, maxY],
-        [height - marginBottom, marginTop]
-      )
+      .scaleLinear([minY, maxY], [height - marginBottom, marginTop])
       .nice();
 
     //create svg-container
@@ -179,7 +173,9 @@ export class LinePlotComponent implements OnInit, OnDestroy {
   }
 
   sortObservations(field: x_fields) {
-    this.observations.sort((a, b) => new Date(a[field]).getTime() - new Date(b[field]).getTime());
+    this.observations.sort(
+      (a, b) => new Date(a[field]).getTime() - new Date(b[field]).getTime()
+    );
   }
 
   ngOnDestroy(): void {
