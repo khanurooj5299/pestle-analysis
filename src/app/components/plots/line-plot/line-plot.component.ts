@@ -30,8 +30,8 @@ export class LinePlotComponent implements OnInit, OnDestroy {
 
   renderPlot() {
     //line plot for published date vs intensity
-    const width = 928;
-    const height = 600;
+    const width = 900;
+    const height = 500;
     const marginTop = 25;
     const marginRight = 20;
     const marginBottom = 35;
@@ -77,7 +77,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .select('figure#line-plot')
       .append('svg')
       .attr('viewBox', [0, 0, width, height])
-      .attr('style', 'max-width: 100%; height: auto; font: 10px sans-serif;');
+      .attr('style', 'max-width: 100%; height: auto; font: 100px sans-serif;');
 
     //draw x-axis
     this.lineSVG
