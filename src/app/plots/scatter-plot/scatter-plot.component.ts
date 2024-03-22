@@ -167,7 +167,7 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
     this.scatterSVG
       .append('g')
       .attr('transform', `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(xScale).tickSizeOuter(0))
+      .call(d3.axisBottom(xScale))
 
     //y-axis
     this.scatterSVG
@@ -175,21 +175,42 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${marginLeft},0)`)
       .call(d3.axisLeft(yScale).tickSizeOuter(0))
 
+      //color scale
+      const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10)
+
       //the line
       //??deal with missing data
-      const line = d3.line()
-    .x((d: any) => {
-      if(d.published) return xScale(new Date(d.published))
-      return xScale(minDate)
-    })
-    .y((d: any) => {
-        if(d.intensity) return yScale(d.intensity)
-        return yScale(minIntensity)
-    })
-    // .curve(d3.curveNatural)
+    //   const line = d3.line()
+    // .x((d: any) => {
+    //   if(d.published) return xScale(new Date(d.published))
+    //   return xScale(minDate)
+    // })
+    // .y((d: any) => {
+    //     if(d.intensity) return yScale(d.intensity)
+    //     return yScale(minIntensity)
+    // })
+    // // .curve(d3.curveNatural)
 
-    this.scatterSVG.append('path').datum(this.observations).attr('d', line).style('stroke', "#787878")
-      .style('stroke-width', 2)
-      .style('fill', 'transparent')
+    // this.scatterSVG.append('path').datum(this.observations).attr('d', line).style('stroke', "#787878")
+    //   .style('stroke-width', 2)
+    //   .style('fill', 'transparent')
+
+    this.scatterSVG.append('g')
+    .selectAll('g')
+    .data( this.observations )
+    // each data point is a group
+    .join('g')
+      .attr('transform', (d: any) => `translate(${xScale(new Date(d.published))},${yScale(d.intensity)})`)
+    // .call() passes in the current d3 selection
+    // This is great if we want to append something
+    // but still want to work with the original selection after that
+    .call((g: any) => g
+      // first we append a circle to our data point
+      .append('circle')
+        .attr('r', 5)
+        .style('stroke', (d: any) => colorScale( d.pestle ))
+        .style('stroke-width', 2)
+        .style('fill', 'transparent')
+    )
   }
 }
