@@ -40,8 +40,10 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     //create x-scale
     const minDate = d3.min(
       this.observations
-        .filter((data) => data.published != null)
-        .map((data) => new Date(data.published))
+        //d3.min ignores null values but new Date(null) returns the start date in JS
+        .map((data) =>
+          data.published ? new Date(data.published) : data.published
+        )
     ) as Date;
     const maxDate = d3.max(
       this.observations,

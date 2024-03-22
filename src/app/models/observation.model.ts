@@ -8,8 +8,8 @@ export interface ObservationModel {
   region: string;
   start_year: number;
   impact: number;
-  added: Date|string;
-  published: Date|string;
+  added: Date;
+  published: Date;
   country: string;
   relevance: number;
   pestle: string;
