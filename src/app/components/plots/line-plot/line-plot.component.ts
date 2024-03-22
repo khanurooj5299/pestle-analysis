@@ -1,14 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
+import {MatSelectModule} from '@angular/material/select';
 
 import { ObservationModel } from '../../../models/observation.model';
 import { DataService } from '../../../services/data.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+type x_fields = "published"|"added"|"end_year"|"start_year";
+type y_fields = "intensity"|"impact"|"relevance"|"likelihood"
 
 @Component({
   selector: 'app-line-plot',
   standalone: true,
-  imports: [],
+  imports: [MatSelectModule, MatFormFieldModule],
   templateUrl: './line-plot.component.html',
   styleUrl: './line-plot.component.css',
 })
@@ -16,6 +21,25 @@ export class LinePlotComponent implements OnInit, OnDestroy {
   private observations: ObservationModel[] = [];
   private subscription: Subscription | undefined;
   private lineSVG: any;
+  //getters and setters for default fields used for plotting
+  private _xField: x_fields= "published";
+  public get xField() {
+    return this._xField;
+  }
+  public set xField(field) {
+    this._xField = field;
+    console.log("here")
+    this.sortObservations(field);
+    this.renderPlot();
+  }
+  private _yField: y_fields = "intensity";
+  public get yField() {
+    return this._yField;
+  }
+  public set yField(field) {
+    this._yField = field;
+    this.renderPlot();
+  }
 
   constructor(private dataService: DataService) {}
 
@@ -29,6 +53,9 @@ export class LinePlotComponent implements OnInit, OnDestroy {
   }
 
   renderPlot() {
+    //clear any prior chart renders
+    d3.selectAll("#line-plot > *").remove();
+
     //line plot for published date vs intensity
     const width = 900;
     const height = 500;
@@ -42,12 +69,12 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       this.observations
         //d3.min ignores null values but new Date(null) returns the start date in JS
         .map((data) =>
-          data.published ? new Date(data.published) : data.published
+          data[this.xField] ? new Date(data[this.xField]) : data[this.xField]
         )
     ) as Date;
     const maxDate = d3.max(
       this.observations,
-      (d) => new Date(d.published)
+      (d) => new Date(d[this.xField])
     ) as Date;
     const xScale = d3
       .scaleTime([minDate, maxDate], [marginLeft, width - marginRight])
@@ -56,7 +83,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     //create y-scale
     const minIntensity = d3.min(
       this.observations,
-      (d) => d.intensity
+      (d) => d[this.yField]
     ) as number;
     const maxIntensity = d3.max(
       this.observations,
@@ -88,7 +115,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
           .attr('y', marginBottom - 4)
           .attr('fill', 'currentColor')
           .attr('text-anchor', 'end')
-          .text('Published date →')
+          .text(`${this.xField} date →`)
       );
 
     //draw y-axis
@@ -110,8 +137,8 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     const line = d3
       .line()
       //only plot those observations which have no missing pieces
-      .defined((d: any) => d.intensity && d.published)
-      .x((d: any) => xScale(new Date(d.published)))
+      .defined((d: any) => d.intensity && d[this.xField])
+      .x((d: any) => xScale(new Date(d[this.xField])))
       .y((d: any) => yScale(d.intensity));
 
     //draw the line
@@ -150,6 +177,10 @@ export class LinePlotComponent implements OnInit, OnDestroy {
           .attr('x1', marginLeft)
           .attr('x2', width - marginRight)
       );
+  }
+
+  sortObservations(field: x_fields) {
+    this.observations.sort((a, b) => new Date(a[field]).getTime() - new Date(b[field]).getTime());
   }
 
   ngOnDestroy(): void {
