@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { ObservationModel } from '../../models/observation.model';
+import { DataService } from '../../../services/data.service';
+import { ObservationModel } from '../../../models/observation.model';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 

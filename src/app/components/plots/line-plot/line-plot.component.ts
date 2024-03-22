@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 
-import { DataService } from '../../services/data.service';
-import { ObservationModel } from '../../models/observation.model';
+import { ObservationModel } from '../../../models/observation.model';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-line-plot',
