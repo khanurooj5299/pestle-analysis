@@ -33,7 +33,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     const width = 900;
     const height = 500;
     const marginTop = 25;
-    const marginRight = 20;
+    const marginRight = 40;
     const marginBottom = 35;
     const marginLeft = 40;
 
@@ -50,10 +50,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       (d) => new Date(d.published)
     ) as Date;
     const xScale = d3
-      .scaleTime(
-        [minDate, maxDate],
-        [marginLeft, width - marginRight - marginRight]
-      )
+      .scaleTime([minDate, maxDate], [marginLeft, width - marginRight])
       .nice();
 
     //create y-scale
@@ -102,7 +99,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .call((g: any) =>
         g
           .append('text')
-          .attr('x', -marginLeft+10)
+          .attr('x', -marginLeft + 10)
           .attr('y', 10)
           .attr('fill', 'currentColor')
           .attr('text-anchor', 'start')
@@ -125,6 +122,34 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .style('stroke', 'rgb(0, 207, 232)')
       .style('stroke-width', 1)
       .style('fill', 'transparent');
+
+    // Create the grid.
+    this.lineSVG
+      .append('g')
+      .attr('stroke', 'currentColor')
+      .attr('stroke-opacity', 0.2)
+      .call((g: any) =>
+        g
+          .append('g')
+          .selectAll('line')
+          .data(xScale.ticks())
+          .join('line')
+          .attr('x1', (d: any) => xScale(d))
+          .attr('x2', (d: any) => xScale(d))
+          .attr('y1', marginTop)
+          .attr('y2', height - marginBottom)
+      )
+      .call((g: any) =>
+        g
+          .append('g')
+          .selectAll('line')
+          .data(yScale.ticks())
+          .join('line')
+          .attr('y1', (d: any) => yScale(d))
+          .attr('y2', (d: any) => yScale(d))
+          .attr('x1', marginLeft)
+          .attr('x2', width - marginRight)
+      );
   }
 
   ngOnDestroy(): void {
