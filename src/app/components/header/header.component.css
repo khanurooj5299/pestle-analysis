@@ -2,7 +2,7 @@
   padding: 1rem;
   font-size: 1.5rem;
   background-color: var(--background-color-dark);
-  border-bottom: 1px solid #232125;
+  border-bottom: 1px solid var(--border-color)
 }
 
 .logo {

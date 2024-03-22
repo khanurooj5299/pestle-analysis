@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-plot-card',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './plot-card.component.css'
 })
 export class PlotCardComponent {
-
+  @Input('title') cardTitle: string = '';
 }

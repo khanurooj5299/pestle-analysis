@@ -4,7 +4,7 @@
 html,
 body {
   height: 100%;
-  /* background-color: var(--background-color-dark); */
+  background-color: var(--background-color-dark);
 }
 body {
   margin: 0;
@@ -19,4 +19,8 @@ body {
 
 :root {
   --background-color-dark: rgb(15, 15, 17);
+  --background-color-grey: #232125;
+  --background-color-light-grey: #55505b;
+  --border-color: #746e7c;
+  --title-text-color: #fbfbfb;
 }

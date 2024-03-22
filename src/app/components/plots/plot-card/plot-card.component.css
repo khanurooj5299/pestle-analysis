@@ -1,0 +1,12 @@
+.card {
+    max-width: 100% !important;
+    margin: 20px;
+    background-color: var(--background-color-grey);
+    border-color: var(--border-color);
+}
+
+.card-header {
+    color: var(--title-text-color);
+    border-color: var(--border-color);
+    background-color: var(--background-color-light-grey);
+}
