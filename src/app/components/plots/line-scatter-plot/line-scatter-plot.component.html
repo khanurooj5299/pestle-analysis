@@ -19,8 +19,8 @@
       <mat-option value="likelihood">Likelihood</mat-option>
     </mat-select>
   </mat-form-field>
-  <div class="align-self-start col-12 col-sm-3 mb-3 mb-sm-0 ms-auto">
-    <mat-button-toggle-group [(ngModel)]="plotType" (change)="changePlotType($event.value)">
+  <div class="col-12 col-sm-5 mb-3 ms-auto d-flex">
+    <mat-button-toggle-group [(ngModel)]="plotType" (change)="changePlotType($event.value)" class="ms-auto align-self-start">
       <mat-button-toggle value="line">Line</mat-button-toggle>
       <mat-button-toggle value="scatter">Scatter</mat-button-toggle>
     </mat-button-toggle-group>
