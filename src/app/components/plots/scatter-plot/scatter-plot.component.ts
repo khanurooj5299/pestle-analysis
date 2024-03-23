@@ -178,23 +178,6 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
       //color scale
       const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10)
 
-      //the line
-      //??deal with missing data
-    //   const line = d3.line()
-    // .x((d: any) => {
-    //   if(d.published) return xScale(new Date(d.published))
-    //   return xScale(minDate)
-    // })
-    // .y((d: any) => {
-    //     if(d.intensity) return yScale(d.intensity)
-    //     return yScale(minIntensity)
-    // })
-    // // .curve(d3.curveNatural)
-
-    // this.scatterSVG.append('path').datum(this.observations).attr('d', line).style('stroke', "#787878")
-    //   .style('stroke-width', 2)
-    //   .style('fill', 'transparent')
-
     this.scatterSVG.append('g')
     .selectAll('g')
     .data( this.observations )
@@ -210,7 +193,7 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
         .attr('r', 5)
         .style('stroke', (d: any) => colorScale( d.pestle ))
         .style('stroke-width', 2)
-        .style('fill', 'transparent')
+        // .style('fill', 'transparent')
     )
   }
 }
