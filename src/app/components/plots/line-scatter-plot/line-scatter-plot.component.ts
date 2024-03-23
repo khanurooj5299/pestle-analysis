@@ -16,13 +16,13 @@ type y_fields = 'intensity' | 'impact' | 'relevance' | 'likelihood';
   selector: 'app-line-plot',
   standalone: true,
   imports: [MatSelectModule, FormsModule, MatButtonToggleModule],
-  templateUrl: './line-plot.component.html',
-  styleUrl: './line-plot.component.css',
+  templateUrl: './line-scatter-plot.component.html',
+  styleUrl: './line-scatter-plot.component.css',
 })
-export class LinePlotComponent implements OnInit, OnDestroy {
+export class LineScatterPlotComponent implements OnInit, OnDestroy {
   private observations: ObservationModel[] = [];
   private subscription: Subscription | undefined;
-  private lineSVG: any;
+  private svg: any;
   //getters and setters for default fields used for plotting
   //could use change event of select also to trigger plot render when select is changed. Just wanted to practice getters and setters
   private _xField: x_fields = 'published';
@@ -96,14 +96,13 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .nice();
 
     //create svg-container
-    this.lineSVG = d3
+    this.svg = d3
       .select('figure#line-plot')
       .append('svg')
-      .attr('viewBox', [0, 0, width, totalHeight])
       .attr('style', 'max-width: 100%; height: auto; font: 10px sans-serif;');
 
     //draw x-axis
-    this.lineSVG
+    this.svg
       .append('g')
       .attr('transform', `translate(0,${totalHeight - marginBottom})`)
       .call(d3.axisBottom(xScale))
@@ -118,7 +117,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       );
 
     //draw y-axis
-    this.lineSVG
+    this.svg
       .append('g')
       .attr('transform', `translate(${marginLeft},0)`)
       .call(d3.axisLeft(yScale))
@@ -133,7 +132,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       );
 
     // draw the grid.
-    this.lineSVG
+    this.svg
       .append('g')
       .attr('stroke', 'currentColor')
       .attr('stroke-opacity', 0.2)
@@ -161,8 +160,15 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       );
 
     //draw line or dots based on value of plotType
-    if (this.plotType == 'line') this.renderLine(xScale, yScale);
-    else this.renderScatter(xScale, yScale);
+    if (this.plotType == 'line') {
+      //set viewbox for line plot. Thi will exclude the space needed for legend in scatter plot
+      this.svg.attr("viewBox", [0, legendHeight, width, plotHeight]);
+      this.renderLine(xScale, yScale);
+    } else {
+      //set viewbox for scatter plot
+      this.svg.attr("viewBox", [0, 0, width, totalHeight])
+      this.renderScatter(xScale, yScale);
+    }
   }
 
   sortObservations(field: x_fields) {
@@ -189,7 +195,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .y((d: any) => yScale(d[this.yField]));
 
     //draw the line
-    this.lineSVG
+    this.svg
       .append('path')
       .datum(this.observations)
       .attr('d', line)
@@ -200,7 +206,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
 
   renderScatter(
     xScale: d3.ScaleTime<number, number, never>,
-    yScale: d3.ScaleLinear<number, number, never>,
+    yScale: d3.ScaleLinear<number, number, never>
   ) {
     //filter out missing data
     const data = this.observations.filter(
@@ -210,11 +216,11 @@ export class LinePlotComponent implements OnInit, OnDestroy {
     //create color scale for pestle
     const colorScale = d3
       .scaleOrdinal()
-      .domain(data.filter(d => d.pestle).map((d) => d.pestle))
+      .domain(data.filter((d) => d.pestle).map((d) => d.pestle))
       .range(d3.schemeCategory10);
 
     //draw dots
-    this.lineSVG
+    this.svg
       .append('g')
       .selectAll('g')
       .data(data)
@@ -236,7 +242,7 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       );
 
     //draw colour legend for Pestle
-    this.lineSVG
+    this.svg
       .append('g')
       .attr('class', 'legendOrdinal')
       .attr('transform', `translate(20, 30)`);
@@ -249,10 +255,12 @@ export class LinePlotComponent implements OnInit, OnDestroy {
       .orient('horizontal')
       .scale(colorScale);
 
-    this.lineSVG.select('.legendOrdinal').call(legendOrdinal);
+    this.svg.select('.legendOrdinal').call(legendOrdinal);
 
     //Style the Title for Legend
-    d3.select('.legendTitle').attr('transform', 'translate(10, 0)').style('font-size', '15px')
+    d3.select('.legendTitle')
+      .attr('transform', 'translate(10, 0)')
+      .style('font-size', '15px');
   }
 
   ngOnDestroy(): void {
