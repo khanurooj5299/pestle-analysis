@@ -1,7 +1,8 @@
-<!-- ACTIONS -->
+<!-- ACTIONS xField, yField and plot-type are configurable-->
 <div class="row justify-content-start">
   <!-- For x-axis -->
   <mat-form-field class="col-12 col-sm-3">
+    <mat-label>X-axis</mat-label>
     <mat-select [(value)]="xField">
       <mat-option value="published">Published</mat-option>
       <mat-option value="added">Added</mat-option>
@@ -12,6 +13,7 @@
   <div class="vs col-12 col-sm-1 mb-3 mb-sm-0">VS</div>
   <!-- For y-axis -->
   <mat-form-field class="col-12 col-sm-3">
+  <mat-label>Y-axis</mat-label>
     <mat-select [(value)]="yField">
       <mat-option value="intensity">Intensity</mat-option>
       <mat-option value="impact">Impact</mat-option>
@@ -19,6 +21,7 @@
       <mat-option value="likelihood">Likelihood</mat-option>
     </mat-select>
   </mat-form-field>
+  <!-- For plot-type -->
   <div class="col-12 col-sm-5 mb-3 ms-auto d-flex">
     <mat-button-toggle-group [(ngModel)]="plotType" (change)="changePlotType($event.value)" class="ms-auto align-self-start">
       <mat-button-toggle value="line">Line</mat-button-toggle>

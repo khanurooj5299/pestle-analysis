@@ -1,2 +1,37 @@
+<!-- ACTIONS: plot type, y-axis-value and category for stacks is configurable -->
+<div class="row justify-content-start">
+  <!-- For colorScale -->
+  @if (plotType=="stacked") {
+  <mat-form-field class="col-12 col-sm-3">
+    <mat-label>Stacked Bars</mat-label>
+    <mat-select [(value)]="stackedBarsField" (selectionChange)="changeStackedBarsField($event.value)">
+      <mat-option value="region">Region</mat-option>
+      <mat-option value="sector">Sector</mat-option>
+    </mat-select>
+  </mat-form-field>
+  }
+  <!-- For y-axis -->
+  <mat-form-field class="col-12 col-sm-3">
+  <mat-label>Y-axis</mat-label>
+    <mat-select [(value)]="yField" (selectionChange)="changeYField($event.value)">
+      <mat-option value="intensity">Mean Intensity</mat-option>
+      <mat-option value="impact">Mean Impact</mat-option>
+      <mat-option value="relevance">Mean Relevance</mat-option>
+      <mat-option value="likelihood">Mean Likelihood</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- For plot-type -->
+  <div class="col-12 col-sm-5 mb-3 ms-auto d-flex">
+    <mat-button-toggle-group
+      [(ngModel)]="plotType"
+      (change)="changePlotType($event.value)"
+      class="ms-auto align-self-start"
+    >
+      <mat-button-toggle value="simple">Simple</mat-button-toggle>
+      <mat-button-toggle value="stacked">Stacked</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+
 <!-- PLOT -->
 <figure id="bar-plot"></figure>

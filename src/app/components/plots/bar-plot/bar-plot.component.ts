@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import legend from 'd3-svg-legend';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
 
 import { DataService } from '../../../services/data.service';
 import { StackedBarsPlotObservationModel } from '../../../models/stacked-bars-plot-observation.model';
@@ -21,7 +24,7 @@ type x_fields = 'pestle';
 @Component({
   selector: 'app-bar-plot',
   standalone: true,
-  imports: [],
+  imports: [MatSelectModule, FormsModule, MatButtonToggleModule],
   templateUrl: './bar-plot.component.html',
   styleUrl: './bar-plot.component.css',
 })
@@ -34,17 +37,17 @@ export class BarPlotComponent implements OnInit {
   private svg: any;
   xField: 'pestle' = 'pestle';
   yField: y_fields = 'intensity';
-  stackedBarsField: stacked_bars_fields = 'region';
-  private plotType: 'simple' | 'stacked' = 'stacked';
+  stackedBarsField: stacked_bars_fields = 'sector';
+  plotType: 'simple' | 'stacked' = 'stacked';
   private colorArray: string[] = [];
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.setObservations();
+    this.setObservationsAndRender();
   }
 
-  setObservations() {
+  setObservationsAndRender() {
     this.dataService
       .getStackedBarsPlotObservations(
         this.xField,
@@ -168,14 +171,15 @@ export class BarPlotComponent implements OnInit {
         const mean = d3.mean(
           d[1].map((el) => el[`mean_${this.yField}`])
         ) as number;
-        yScale(mean);
+        return yScale(mean);
       })
-      .attr('width', xScale.bandwidth())
-      .attr(
-        'height',
-        (d: StackedBarsPlotObservationModel) =>
-          yScale(0) - yScale(d[`mean_${this.yField}`])
-      )
+      .attr('width', xScale.bandwidth() - 30)
+      .attr('height', (d: [x_fields, StackedBarsPlotObservationModel[]]) => {
+        const mean = d3.mean(
+          d[1].map((el) => el[`mean_${this.yField}`])
+        ) as number;
+        return yScale(0) - yScale(mean);
+      })
       .attr('fill', 'rgb(0, 207, 232)');
   }
 
@@ -234,11 +238,15 @@ export class BarPlotComponent implements OnInit {
         stackedBarsColorScale(d[this.stackedBarsField] as stacked_bars_fields)
       );
 
-      //draw legend
-      this.drawLegend(stackedBarsColorScale, svgWidth, marginRight);
+    //draw legend
+    this.drawLegend(stackedBarsColorScale, svgWidth, marginRight);
   }
 
-  drawLegend(stackedBarsColorScale: d3.ScaleOrdinal<string, unknown, never>, svgWidth: number, marginRight: number) {
+  drawLegend(
+    stackedBarsColorScale: d3.ScaleOrdinal<string, unknown, never>,
+    svgWidth: number,
+    marginRight: number
+  ) {
     //draw color-legend for stackBarField category
     this.svg
       .append('g')
@@ -260,21 +268,36 @@ export class BarPlotComponent implements OnInit {
     this.svg.select('.legendOrdinal').call(legendOrdinal);
 
     //cell-wrapping if they exceed svg width
-    d3.selectAll("#bar-plot .cell").attr('transform', (d,i,nodes)=>{
+    d3.selectAll('#bar-plot .cell').attr('transform', (d, i, nodes) => {
       const currentTransform = d3.select(nodes[i]).attr('transform');
       //parse the current x value of this node
       const currentX = +currentTransform.split(',')[0].substring(10);
-      if(currentX >= svgWidth - (marginRight + cellWidth)) {
-        const newX = currentX - svgWidth;
+      if (currentX >= svgWidth - (marginRight + cellWidth)) {
+        const newX = currentX - svgWidth + 60;
         return `translate(${newX}, 70)`;
       } else {
         return currentTransform;
       }
-    })
+    });
 
     //Style the Title for Legend
     d3.select('.legendTitle')
       .attr('transform', 'translate(10, 0)')
       .style('font-size', '15px');
+  }
+
+  changePlotType(plotType: 'simple' | 'stacked') {
+    this.plotType = plotType;
+    this.renderPlot();
+  }
+
+  changeYField(yField: y_fields) {
+    this.yField = yField;
+    this.setObservationsAndRender();
+  }
+
+  changeStackedBarsField(stackedBarsField: stacked_bars_fields) {
+    this.stackedBarsField = stackedBarsField;
+    this.setObservationsAndRender();
   }
 }
