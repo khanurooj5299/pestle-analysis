@@ -33,7 +33,7 @@ export class ListObservationsComponent implements OnInit {
   }
   paginate(pageEvent: PageEvent) {
     this.pageSize = pageEvent.pageSize;
-    const newStartIndex = (pageEvent.pageIndex-1)*this.pageSize;
+    const newStartIndex = pageEvent.pageIndex*this.pageSize;
     this.currentObservations = this.observations.slice(newStartIndex, newStartIndex + this.pageSize);
   }
 }
