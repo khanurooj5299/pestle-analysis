@@ -16,7 +16,7 @@ import { ListItemObservationComponent } from './list-item-observation/list-item-
 export class ListObservationsComponent implements OnInit {
   observations: ObservationModel[] = [];
   currentObservations: ObservationModel[] = [];
-  pageSize = 10;
+  pageSize = 9;
 
   constructor(private dataService: DataService) {}
   ngOnInit(): void {

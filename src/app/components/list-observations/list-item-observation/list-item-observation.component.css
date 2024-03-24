@@ -16,10 +16,20 @@
 
 .info-container {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr))
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1rem;
 }
 
 :host {
     display: flex;
     height: 100%;
+}
+
+.key span {
+    background-color: rgb(123, 31, 162);
+    padding: 5px 10px;
+    border-radius: 10px;
+    width: 6rem;
+    display: inline-block;
+    text-align: center;
 }

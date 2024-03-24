@@ -7,16 +7,16 @@
       @for(item of observationItem|keyvalue; track item.key) { 
         @if(infoExcludeFields.indexOf(item.key)==-1 && item.value) { 
           @if (item.key == "added" || item.key=="published") {
-            <div>{{ item.key }}</div>
+            <div class="key"><span>{{ item.key | titlecase}}</span></div>
             <div>{{ item.value | date : "shortDate" }}</div>
           }
           @else {
-            <div>{{ item.key }}</div>
+            <div class="key"><span>{{ item.key.replace('_', ' ') | titlecase }}</span></div>
             <div>{{ item.value }}</div>
           } 
         } 
       }
     </div>
-    <a target="_blank" href={{observationItem?.url}} mat-stroked-button color="primary">Read More<mat-icon>open_in_new</mat-icon></a>
+    <a target="_blank" href={{observationItem?.url}} mat-stroked-button color="primary" class="mt-2">Read More<mat-icon>open_in_new</mat-icon></a>
   </div>
 </div>

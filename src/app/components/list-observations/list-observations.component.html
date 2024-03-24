@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row m-0">
   @for (observation of currentObservations; track observation._id) {
   <div class="col-12 col-sm-6 col-lg-4">
     <app-list-item-observation [item]="observation"></app-list-item-observation>
@@ -10,8 +10,9 @@
 <mat-paginator
   [length]="observations.length"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[5, 10, 25, 100]"
+  [pageSizeOptions]="[9, 24, 100]"
   (page)="paginate($event)"
+  [showFirstLastButtons]="true"
   aria-label="Select page"
 >
 </mat-paginator>

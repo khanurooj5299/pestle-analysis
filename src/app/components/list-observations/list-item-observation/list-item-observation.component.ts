@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { DatePipe, KeyValuePipe } from '@angular/common';
+import { DatePipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +9,7 @@ import { ObservationModel } from '../../../models/observation.model';
 @Component({
   selector: 'app-list-item-observation',
   standalone: true,
-  imports: [KeyValuePipe, MatDividerModule, DatePipe, MatButtonModule, MatIconModule],
+  imports: [KeyValuePipe, MatDividerModule, DatePipe, MatButtonModule, MatIconModule, TitleCasePipe],
   templateUrl: './list-item-observation.component.html',
   styleUrl: './list-item-observation.component.css'
 })
