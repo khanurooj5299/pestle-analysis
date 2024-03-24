@@ -74,13 +74,18 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
     const minDate = d3.min(
       this.observations
         //d3.min ignores null values but new Date(null) returns the start date in JS
-        .map((data) =>
-          data[this.xField] ? new Date(data[this.xField]) : data[this.xField]
-        )
+        .map((data) => {
+          return data[this.xField]
+            ? this.xField == 'end_year' || this.xField == 'start_year'
+              ? new Date(data[this.xField] as number, 0)
+              : new Date(data[this.xField])
+            : data[this.xField];
+        })
     ) as Date;
-    const maxDate = d3.max(
-      this.observations,
-      (d) => new Date(d[this.xField])
+    const maxDate = d3.max(this.observations, (d) =>
+      this.xField == 'end_year' || this.xField == 'start_year'
+        ? new Date(d[this.xField] as number, 0)
+        : new Date(d[this.xField])
     ) as Date;
     const xScale = d3
       .scaleTime([minDate, maxDate], [marginLeft, width - marginRight])
@@ -163,11 +168,11 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
     //draw line or dots based on value of plotType
     if (this.plotType == 'line') {
       //set viewbox for line plot. Thi will exclude the space needed for legend in scatter plot
-      this.svg.attr("viewBox", [0, legendHeight, width, plotHeight]);
+      this.svg.attr('viewBox', [0, legendHeight, width, plotHeight]);
       this.renderLine(xScale, yScale);
     } else {
       //set viewbox for scatter plot
-      this.svg.attr("viewBox", [0, 0, width, totalHeight])
+      this.svg.attr('viewBox', [0, 0, width, totalHeight]);
       this.renderScatter(xScale, yScale);
     }
   }
@@ -192,7 +197,13 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
       .line()
       //only plot those observations which have no missing pieces
       .defined((d: any) => d[this.yField] && d[this.xField])
-      .x((d: any) => xScale(new Date(d[this.xField])))
+      .x((d: any) =>
+        xScale(
+          this.xField == 'end_year' || this.xField == 'start_year'
+            ? new Date(d[this.xField] as number, 0)
+            : new Date(d[this.xField])
+        )
+      )
       .y((d: any) => yScale(d[this.yField]));
 
     //draw the line
@@ -226,13 +237,13 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
       .selectAll('g')
       .data(data)
       .join('g')
-      .attr(
-        'transform',
-        (d: any) =>
-          `translate(${xScale(new Date(d[this.xField]))},${yScale(
-            d[this.yField]
-          )})`
-      )
+      .attr('transform', (d: any) => {
+        const date =
+          (this.xField == 'end_year' || this.xField == 'start_year')
+            ? new Date(d[this.xField] as number, 0)
+            : new Date(d[this.xField]);
+        return `translate(${xScale(date)},${yScale(d[this.yField])})`;
+      })
       .call((g: any) =>
         g
           .append('circle')
