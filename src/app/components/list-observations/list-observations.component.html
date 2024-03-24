@@ -1,8 +1,8 @@
 <!-- FILTERS -->
-<div class="filters">
+<div class="filters ps-3">
   <!-- For Filter Category -->
-  <mat-form-field>
-    <mat-label>Category</mat-label>
+  <mat-form-field class="me-2">
+    <mat-label>Filter by Category</mat-label>
     <mat-select
       [(value)]="selectedFilterCategory"
       (selectionChange)="changeFilterCategory($event.value)"
@@ -18,7 +18,7 @@
     <mat-label>Value</mat-label>
     <mat-select
       [(value)]="selectedFilterCategorySelectedValue"
-      (selectionChange)="changeFilterCategoryValue($event.value)"
+      (selectionChange)="changeSelectedFilterCategoryValue($event.value)"
     >
       @for(option of selectedFilterCategoryDomain; track option){
       <mat-option [value]="option">{{ option | titlecase }}</mat-option>
@@ -41,9 +41,10 @@
 
 <!-- PAGINATION -->
 <mat-paginator
-  [length]="observations.length"
+  [length]="currentObservations.length"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[9, 24, 100]"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="pageSizeOptions"
   (page)="paginate($event)"
   [showFirstLastButtons]="true"
   aria-label="Select page"

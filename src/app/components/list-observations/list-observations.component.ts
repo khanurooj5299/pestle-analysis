@@ -17,15 +17,18 @@ import { TitleCasePipe } from '@angular/common';
     MatPaginatorModule,
     MatSelectModule,
     MatFormFieldModule,
-    TitleCasePipe
+    TitleCasePipe,
   ],
   templateUrl: './list-observations.component.html',
   styleUrl: './list-observations.component.css',
 })
 export class ListObservationsComponent implements OnInit {
   observations: ObservationModel[] = [];
+  filteredObservations: ObservationModel[] = [];
   currentObservations: ObservationModel[] = [];
   pageSize = 9;
+  pageSizeOptions = [9, 18, 50, 100];
+  pageIndex = 0;
   //categories on basis of which filtering is allowed
   filterCategories: string[] = [
     'none',
@@ -36,11 +39,11 @@ export class ListObservationsComponent implements OnInit {
     'source',
     'country',
   ];
-  selectedFilterCategory: string = "none";
+  selectedFilterCategory: string = 'none';
   //possible values for the selected category
   selectedFilterCategoryDomain: string[] = [];
   //selected value from the domain of the selected category
-  selectedFilterCategorySelectedValue: string = "";
+  selectedFilterCategorySelectedValue: string = '';
 
   constructor(private dataService: DataService) {}
   ngOnInit(): void {
@@ -52,10 +55,14 @@ export class ListObservationsComponent implements OnInit {
       }
     });
   }
-  paginate(pageEvent: PageEvent) {
-    this.pageSize = pageEvent.pageSize;
-    const newStartIndex = pageEvent.pageIndex * this.pageSize;
-    this.currentObservations = this.observations.slice(
+  paginate({ pageSize, pageIndex }: { pageSize: number; pageIndex: number }) {
+    this.pageSize = pageSize;
+    this.pageIndex = pageIndex;
+    const newStartIndex = pageIndex * this.pageSize;
+    const source = this.selectedFilterCategorySelectedValue
+      ? this.filteredObservations
+      : this.observations;
+    this.currentObservations = source.slice(
       newStartIndex,
       newStartIndex + this.pageSize
     );
@@ -63,12 +70,31 @@ export class ListObservationsComponent implements OnInit {
 
   changeFilterCategory(selectedFilterCategory: string) {
     this.selectedFilterCategory = selectedFilterCategory;
-    this.dataService.getCategoryDomain(selectedFilterCategory).subscribe(data=>{
-      this.selectedFilterCategoryDomain = data;
-    });
+    //reset
+    if (
+      selectedFilterCategory == 'none' &&
+      this.selectedFilterCategorySelectedValue
+    ) {
+      this.selectedFilterCategorySelectedValue = '';
+      this.paginate({ pageSize: 9, pageIndex: 0 });
+    } else if (selectedFilterCategory == 'none') {
+      //do nothing
+    } else {
+      this.dataService
+        .getCategoryDomain(selectedFilterCategory)
+        .subscribe((data) => {
+          this.selectedFilterCategoryDomain = data;
+        });
+    }
   }
 
-  changeFilterCategoryValue(value: string) {
-    
+  changeSelectedFilterCategoryValue(value: string) {
+    this.selectedFilterCategorySelectedValue = value;
+    this.filteredObservations = this.observations.filter(
+      (obs) =>
+        obs[this.selectedFilterCategory as keyof ObservationModel] == value
+    );
+    //reset pagination
+    this.paginate({ pageSize: 9, pageIndex: 0 });
   }
 }
