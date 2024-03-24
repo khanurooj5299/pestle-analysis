@@ -1,5 +1,17 @@
-@for (observation of observations; track observation._id) {
-<app-list-item-observation [item]="observation"></app-list-item-observation>
-} @empty {
-<div>No observations</div>
-}
+<div class="row">
+  @for (observation of currentObservations; track observation._id) {
+  <div class="col-12 col-sm-6 col-lg-4">
+    <app-list-item-observation [item]="observation"></app-list-item-observation>
+  </div>
+  } @empty {
+  <div class="col-12">No observations</div>
+  }
+</div>
+<mat-paginator
+  [length]="observations.length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="paginate($event)"
+  aria-label="Select page"
+>
+</mat-paginator>

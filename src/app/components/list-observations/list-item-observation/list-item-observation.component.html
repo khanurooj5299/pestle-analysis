@@ -1,15 +1,22 @@
 <div class="card mb-3">
   <div class="card-body">
-    <h2 class="card-title">{{observationItem?.insight}}</h2>
-    <p class="card-text">{{observationItem?.title}}</p>
+    <h2 class="card-title">{{ observationItem?.insight }}</h2>
+    <p class="card-text">{{ observationItem?.title }}</p>
     <mat-divider></mat-divider>
     <div class="info-container mt-2">
-        @for(item of observationItem|keyvalue; track item.key) {
-            @if(infoExcludeFields.indexOf(item.key)==-1 && item.value) {
-                <div>{{item.key}}</div>
-                <div>{{item.value}}</div>
-            }
-        }
+      @for(item of observationItem|keyvalue; track item.key) { 
+        @if(infoExcludeFields.indexOf(item.key)==-1 && item.value) { 
+          @if (item.key == "added" || item.key=="published") {
+            <div>{{ item.key }}</div>
+            <div>{{ item.value | date : "shortDate" }}</div>
+          }
+          @else {
+            <div>{{ item.key }}</div>
+            <div>{{ item.value }}</div>
+          } 
+        } 
+      }
     </div>
+    <a target="_blank" href={{observationItem?.url}} mat-stroked-button color="primary">Read More<mat-icon>open_in_new</mat-icon></a>
   </div>
 </div>
