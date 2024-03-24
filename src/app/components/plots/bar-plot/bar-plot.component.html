@@ -2,7 +2,7 @@
 <div class="row justify-content-start">
   <!-- For colorScale -->
   @if (plotType=="stacked") {
-  <mat-form-field class="col-12 col-sm-3">
+  <mat-form-field class="col-12 col-sm-4">
     <mat-label>Stacked Bars</mat-label>
     <mat-select [(value)]="stackedBarsField" (selectionChange)="changeStackedBarsField($event.value)">
       <mat-option value="region">Region</mat-option>

@@ -100,7 +100,7 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
     this.svg = d3
       .select('figure#line-scatter-plot')
       .append('svg')
-      .attr('style', 'max-width: 100%; height: auto; font: 10px sans-serif;');
+      .attr('style', 'max-width: 100%; height: 100%; font: 10px sans-serif;');
 
     //draw x-axis
     this.svg
