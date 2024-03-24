@@ -50,6 +50,7 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
     this.subscription = this.dataService.getObservations().subscribe((data) => {
       if (data.length) {
         this.observations = data;
+        this.sortObservations(this.xField); //for initial load
         this.renderPlot();
       }
     });
