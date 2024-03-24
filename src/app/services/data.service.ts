@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { ObservationModel } from '../models/observation.model';
 import { StackedBarsPlotObservationModel } from '../models/stacked-bars-plot-observation.model';
@@ -21,10 +21,12 @@ export class DataService {
       });
   }
 
+  //get all observations
   getObservations() {
     return this.observations;
   }
 
+  //get all observations in a specific format for the stackedBarPlot
   getStackedBarsPlotObservations(
     xField: string,
     yField: string,
@@ -37,5 +39,14 @@ export class DataService {
     return this.http.get<StackedBarsPlotObservationModel[]>(
       `${this.apiUrl}observation/observations/stacked-bars-plot`, {params}
     );
+  }
+
+  //get an array of 30 different color needed for some plots
+  //gets a hex file from angular server and parses it
+  getColorArray() {
+    return this.http.get("/assets/30-color.hex", {responseType: "text"}).pipe(map((hexFile: string)=>{
+      const colorArray = hexFile.split("\n").map(color => "#"+color.replaceAll('\r', ''));
+      return colorArray;
+    }))
   }
 }

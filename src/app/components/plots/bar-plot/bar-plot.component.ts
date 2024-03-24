@@ -63,7 +63,7 @@ export class BarPlotComponent implements OnInit {
 
     //stacked bar plot for pestle vs average numerical fields (check xFields and yFields types above) with
     //color scale to show other categories
-    const width = 2000;
+    const width = 900;
     const plotHeight = 500;
     const legendHeight = 100;
     const totalHeight = plotHeight + legendHeight;
