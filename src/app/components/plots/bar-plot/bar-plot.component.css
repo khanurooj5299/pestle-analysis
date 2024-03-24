@@ -1,0 +1,6 @@
+figure {
+    background-color: var(--background-color-bright);
+    border-radius: 3px;
+    color: var(--text-dark);
+    margin: 0;
+}

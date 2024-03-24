@@ -28,12 +28,12 @@ export class DataService {
   getStackedBarsPlotObservations(
     xField: string,
     yField: string,
-    stackedBarsPlotField: string
+    stackedBarsField: string
   ) {
     const params = new HttpParams()
       .set('xField', xField)
       .set('yField', yField)
-      .set('stackedBarsPlotField', stackedBarsPlotField);
+      .set('stackedBarsField', stackedBarsField);
     return this.http.get<StackedBarsPlotObservationModel[]>(
       `${this.apiUrl}observation/observations/stacked-bars-plot`, {params}
     );

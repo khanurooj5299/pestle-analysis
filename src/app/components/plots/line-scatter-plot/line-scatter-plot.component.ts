@@ -57,7 +57,7 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
 
   renderPlot() {
     //clear any prior chart renders
-    d3.selectAll('#line-plot > *').remove();
+    d3.selectAll('#line-scatter-plot > *').remove();
 
     //line plot for date fields vs numerical fields (check xFields and yFields types above)
     const width = 900;
@@ -95,9 +95,9 @@ export class LineScatterPlotComponent implements OnInit, OnDestroy {
       )
       .nice();
 
-    //create svg-container
+    //create svg container
     this.svg = d3
-      .select('figure#line-plot')
+      .select('figure#line-scatter-plot')
       .append('svg')
       .attr('style', 'max-width: 100%; height: auto; font: 10px sans-serif;');
 
