@@ -16,4 +16,5 @@ export interface ObservationModel {
   source: string;
   title: string;
   likelihood: number;
+  _id: string;
 }

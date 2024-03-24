@@ -1,1 +1,5 @@
-<p>list-observations works!</p>
+@for (observation of observations; track observation._id) {
+<app-list-item-observation [item]="observation"></app-list-item-observation>
+} @empty {
+<div>No observations</div>
+}

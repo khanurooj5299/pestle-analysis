@@ -1,1 +1,15 @@
-<p>list-item-observation works!</p>
+<div class="card mb-3">
+  <div class="card-body">
+    <h2 class="card-title">{{observationItem?.insight}}</h2>
+    <p class="card-text">{{observationItem?.title}}</p>
+    <mat-divider></mat-divider>
+    <div class="info-container mt-2">
+        @for(item of observationItem|keyvalue; track item.key) {
+            @if(infoExcludeFields.indexOf(item.key)==-1 && item.value) {
+                <div>{{item.key}}</div>
+                <div>{{item.value}}</div>
+            }
+        }
+    </div>
+  </div>
+</div>

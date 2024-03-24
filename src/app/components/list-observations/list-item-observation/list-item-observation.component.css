@@ -1,0 +1,10 @@
+.card {
+    background-color: var(--background-color-grey);
+    border-color: var(--border-color);
+    color: var(--text-light)
+}
+
+.info-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr
+}
