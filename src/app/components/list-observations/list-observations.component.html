@@ -1,3 +1,34 @@
+<!-- FILTERS -->
+<div class="filters">
+  <!-- For Filter Category -->
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <mat-select
+      [(value)]="selectedFilterCategory"
+      (selectionChange)="changeFilterCategory($event.value)"
+    >
+      @for(option of filterCategories; track option){
+      <mat-option [value]="option">{{ option | titlecase }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <!-- For Filter Category Value-->
+  @if (selectedFilterCategory!="none") {
+  <mat-form-field>
+    <mat-label>Value</mat-label>
+    <mat-select
+      [(value)]="selectedFilterCategorySelectedValue"
+      (selectionChange)="changeFilterCategoryValue($event.value)"
+    >
+      @for(option of selectedFilterCategoryDomain; track option){
+      <mat-option [value]="option">{{ option | titlecase }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  }
+</div>
+
+<!-- OBSERVATIONS -->
 <div class="row m-0">
   @for (observation of currentObservations; track observation._id) {
   <div class="col-12 col-sm-6 col-lg-4">
@@ -7,6 +38,8 @@
   <div class="col-12">No observations</div>
   }
 </div>
+
+<!-- PAGINATION -->
 <mat-paginator
   [length]="observations.length"
   [pageSize]="pageSize"

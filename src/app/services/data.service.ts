@@ -49,4 +49,9 @@ export class DataService {
       return colorArray;
     }))
   }
+
+  //gets all possible values for a certain category like how many different countries are there
+  getCategoryDomain(category: string) {
+    return this.http.get<string[]>(`${this.apiUrl}observation/get-category-domain/${category}`);
+  }
 }
