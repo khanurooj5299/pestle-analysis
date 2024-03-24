@@ -38,7 +38,7 @@ export class BarPlotComponent implements OnInit {
   xField: 'pestle' = 'pestle';
   yField: y_fields = 'intensity';
   stackedBarsField: stacked_bars_fields = 'sector';
-  plotType: 'simple' | 'stacked' = 'stacked';
+  plotType: 'simple' | 'stacked' = 'simple';
   private colorArray: string[] = [];
 
   constructor(private dataService: DataService) {}
