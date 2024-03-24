@@ -13,3 +13,7 @@
   -webkit-text-fill-color: transparent;
   align-self: flex-start;
 }
+
+.active {
+  background-color: white;
+}
