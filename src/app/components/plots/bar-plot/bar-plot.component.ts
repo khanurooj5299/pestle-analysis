@@ -44,6 +44,13 @@ export class BarPlotComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    //load colors
+    this.dataService.getColorArray().subscribe({
+      next: (colorArray) => {
+        this.colorArray = colorArray;
+        this.renderPlot();
+      },
+    });
     this.setObservationsAndRender();
   }
 
@@ -57,17 +64,7 @@ export class BarPlotComponent implements OnInit {
       .subscribe((data) => {
         if (data.length) {
           this.observations = data;
-          if (this.plotType == 'stacked') {
-            //if mode is stacked colorArray is also needed before rendering
-            this.dataService.getColorArray().subscribe({
-              next: (colorArray) => {
-                this.colorArray = colorArray;
-                this.renderPlot();
-              },
-            });
-          } else {
-            this.renderPlot();
-          }
+          this.renderPlot();
         }
       });
   }
