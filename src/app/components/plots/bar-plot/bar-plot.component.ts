@@ -48,10 +48,9 @@ export class BarPlotComponent implements OnInit {
     this.dataService.getColorArray().subscribe({
       next: (colorArray) => {
         this.colorArray = colorArray;
-        this.renderPlot();
+        this.setObservationsAndRender();
       },
     });
-    this.setObservationsAndRender();
   }
 
   setObservationsAndRender() {
@@ -92,7 +91,13 @@ export class BarPlotComponent implements OnInit {
       //so ts thinks that d[this.xField] maybe undefined
       .domain(new Set(this.observations.map((d) => d[this.xField] as x_fields)))
       .range([marginLeft, width - marginRight])
-      .paddingInner(0.2);
+    
+    //set padding for xScale depending on plot-type because stacked bars need less padding
+    if(this.plotType == "stacked") {
+      xScale.padding(0.2);
+    } else {
+      xScale.padding(0.4);
+    }
 
     //create y-scale
     const yScale = d3
@@ -170,7 +175,7 @@ export class BarPlotComponent implements OnInit {
         ) as number;
         return yScale(mean);
       })
-      .attr('width', xScale.bandwidth() - 30)
+      .attr('width', xScale.bandwidth())
       .attr('height', (d: [x_fields, StackedBarsPlotObservationModel[]]) => {
         const mean = d3.mean(
           d[1].map((el) => el[`mean_${this.yField}`])
